@@ -18,6 +18,18 @@ By default, the input is a text field for the image's URL.
 <div class="field-unit__label">
   <%= f.label field.attribute %>
 </div>
+
 <div class="field-unit__field">
+  <% if f.object.logo.previewable? %>
+    <%= link_to(image_tag(f.object.logo.preview(resize: "200x200>")),  rails_blob_path(f.object.logo, disposition: "attachment"))%>
+  <% elsif f.object.logo.variable? %>
+    <%= link_to(image_tag(f.object.logo.variant(resize: "200x200")), rails_blob_path(f.object.logo, disposition: "attachment"))%>
+  <% else %>
+    <%= link_to "Download file", rails_blob_path(f.object.logo, disposition: "attachment") %>
+  <% end %>
+  <br>
+  <hr>
+  <br>
   <%= f.file_field field.attribute, multiple: field.many? %>
+  <p>Upload a new file</p>
 </div>
